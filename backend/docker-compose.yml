@@ -1,0 +1,26 @@
+version: '3.8'  # Specify the version of the Docker Compose file format
+
+services:  # Define the services that will be run
+  disco:  # Name of the main application service
+    build: .  # Build the Docker image from the Dockerfile in the current directory
+    env_file:  # Specify a file containing environment variables
+      - .env  # The file from which to read environment variables
+    ports:  # Define port mappings
+      - "3000:3000"  # Map port 3000 on the host to port 3000 in the container
+    volumes:  # Define volume mappings
+      - .:/usr/src/app  # Mount the current directory to /usr/src/app in the container
+    command: go run main.go -b 0.0.0.0  # Command to run the Go application
+
+  db:
+    image: postgres:alpine  # Use the PostgreSQL image based on Alpine Linux
+    environment:  # Define environment variables for the database
+      - POSTGRES_USER=${DB_USER}  # Set the PostgreSQL username from the .env file
+      - POSTGRES_PASSWORD=${DB_PASSWORD}  # Set the PostgreSQL password from the .env file
+      - POSTGRES_DB=${DB_NAME}  # Set the PostgreSQL database name from the .env file
+    ports:  # Define port mappings for the database
+      - "5432:5432"  # Map port 5432 on the host to port 5432 in the container
+    volumes:  # Define volume mappings for persistent data
+      - disco-db:/var/lib/postgresql/data  # Use a named volume disco-db for PostgreSQL data
+
+volumes:  # Define the named volumes
+  disco-db:  # Create a named volume called disco-db
