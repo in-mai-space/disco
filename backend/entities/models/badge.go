@@ -1,4 +1,4 @@
-package models
+package entities
 
 type Badge struct {
 	BaseModel
