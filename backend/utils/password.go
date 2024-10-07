@@ -2,11 +2,10 @@ package utils
 
 import (
 	"github.com/in-mai-space/disco/entities/models"
-	"github.com/in-mai-space/disco/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (u *models.User) HashPassword() error {
+func HashPassword(u *models.User) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
